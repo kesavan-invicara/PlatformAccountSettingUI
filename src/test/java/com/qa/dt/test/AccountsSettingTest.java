@@ -7,13 +7,26 @@ import org.testng.annotations.Test;
 import java.util.Calendar;
 import java.util.Properties;
 
+import javax.imageio.ImageIO;
+
+import org.openqa.selenium.By;
 import org.testng.Assert;
 
 import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.Status;
+import com.google.zxing.BinaryBitmap;
+import com.google.zxing.LuminanceSource;
+import com.google.zxing.MultiFormatReader;
+import com.google.zxing.NotFoundException;
+import com.google.zxing.client.j2se.BufferedImageLuminanceSource;
+import com.google.zxing.common.HybridBinarizer;
+import com.google.zxing.Result;
+import javax.xml.bind.DatatypeConverter;
+
 import com.qa.dt.base.BaseClass;
 import com.qa.dt.page.AccountSettingsPage;
 import com.qa.dt.page.AdminHomePage;
+import com.qa.dt.page.AuthenticatorPage;
 import com.qa.dt.page.DashboardPage;
 import com.qa.dt.page.DeleteUserPage;
 import com.qa.dt.page.InvitationsPage;
@@ -30,6 +43,10 @@ import java.awt.Robot;
 import java.awt.Toolkit;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.KeyEvent;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 
 
 @Listeners(com.qa.dt.util.ListenerClass.class)
@@ -45,6 +62,7 @@ public class AccountsSettingTest extends LoginintoTheApplicationTest {
 	InvitationsPage invitationsPage;
 	MyApplicationsPage myApplicationsPage;
 	UserAccessKeysPage userAccessKeysPage;
+	AuthenticatorPage authenticatorPage;
 	
 	/**
 	 * @author Kesavan N
@@ -934,12 +952,131 @@ public class AccountsSettingTest extends LoginintoTheApplicationTest {
 
 	}
 
+	/**
+	 * @author Kesavan N
+	 * @description  Verify authenticator in New Account Setting * 
+	 * @throws Exception
+	 */
+	@Test(priority = 8)
+	public void verifyAuthenticatorPage() throws Exception {    	
+    	loginPage = new LoginPage();
+    	accountSettingsPage= new AccountSettingsPage();   
+		adminHomePage = new AdminHomePage(); 
+		dashboardPage = new DashboardPage();	
+		userInformationPage = new UserInformationPage();
+		passwordPage = new PasswordPage();
+		deleteUserPage = new DeleteUserPage();
+		invitationsPage = new InvitationsPage();
+		myApplicationsPage = new MyApplicationsPage();
+		authenticatorPage = new AuthenticatorPage();
+		
+		Properties loadProperties = loadProperties();	
+		
+		// step 1 - create user
+		String email = generateRandomEmail();
+		String firstName = "Test";
+		String lastName = "User";
+		String password = loadProperties.getProperty("RfPassword");
+		
+		System.out.println("email "+email);
+    	ExtentManager.test.log(Status.INFO, "TC_Description - Create New User and verify invitations");	
+		adminHomePage.clickLeftNavigation();	
+		adminHomePage.clickSignout();
+
+		Thread.sleep(5000);
+		loginPage.clickSignUp();
+
+		loginPage.enterSignUpEmail(email);
+		loginPage.enterSignUpFirstName(firstName);
+		loginPage.enterSignUpLastName(lastName);
+		loginPage.enterSignUpPassword(password);
+		loginPage.enterSignUpConfirmPassword(password);
+		loginPage.clickSignUpConfirmationCheckbox();		
+		loginPage.clickSignUpButton();
+		Thread.sleep(10000);
+
+		System.out.println("test "+loginPage.getSignUpMessage());
+		Assert.assertEquals("Your account has been successfully created. Please click here to login",loginPage.getSignUpMessage());
+		loginPage.clickClickHereLink();
+		Thread.sleep(10000);
+
+		// step 2 - verify email if staging environments
+		if(loadProperties.getProperty("RfUrl").contains("staging")){
+			loginPage.enterPassword(password);
+			System.out.println("test "+loginPage.getSignInEmailVerificationMessage());
+			Assert.assertEquals("You need to verify your email address to activate your account.", loginPage.getSignInEmailVerificationMessage());
+			loginPage.verifyEmail(loadProperties.getProperty("mailinatorUrl"), 
+									email, 
+									loadProperties.getProperty("Theme"));
+			switchOrCloseTabs(1, "switch");						
+			adminHomePage.clickLeftNavigation();
+			adminHomePage.clickAccountSettings();
+			switchOrCloseTabs(2, "switch");						
+		} else {
+			loginPage.enterPassword(password);
+			adminHomePage.clickLeftNavigation();
+			adminHomePage.clickAccountSettings();
+			switchOrCloseTabs(1, "switch");
+		}
+
+		// step 3 - verify page title, greetings and name
+		ExtentManager.test.log(Status.INFO, "TC_Description - Verify Page Title, Greetings and Name");
+		if(loadProperties.getProperty("Theme").equals("Twinit")){
+			Assert.assertEquals("Invicara - Account setting", driver.getTitle());
+			dashboardPage.clickAuthenticatorLink();
+		} else if(loadProperties.getProperty("Theme").equals("Mirrana")){
+			Assert.assertEquals("Mirrana - Account setting", driver.getTitle());
+			dashboardPage.clickAuthenticatorLinkMirrana();
+		}
+		authenticatorPage.switchToFrame();
+		System.out.println("test "+ authenticatorPage.getQRImageSrc());
+		String qrCodeURL = authenticatorPage.getQRImageSrc();
+		System.out.println("qrCodeURL "+qrCodeURL);
+
+		// URL url=new URL(qrCodeURL);
+		String base64Image = qrCodeURL.split(",")[1];
+		byte[] imageBytes = DatatypeConverter.parseBase64Binary(base64Image);
+
+		BufferedImage bufferedimage=ImageIO.read(new ByteArrayInputStream(imageBytes));
+		// Process the image
+		LuminanceSource luminanceSource=new BufferedImageLuminanceSource(bufferedimage);
+		BinaryBitmap binaryBitmap=new BinaryBitmap(new HybridBinarizer(luminanceSource));
+
+		//To Capture details of QR code
+		Result result =new MultiFormatReader().decode(binaryBitmap);
+		System.out.println("test "+result.getText());
+		String test = result.getText().replace("%40", "@");
+		System.out.println("test "+test);
+		Assert.assertTrue(test.contains(email));
+		Assert.assertTrue(test.contains("otpauth://totp/Twinit.io:"));
+		Assert.assertTrue(test.contains("digits=6&algorithm=SHA1&issuer=Twinit.io&period=30"));
+
+		// verify error message on QR page
+		Thread.sleep(10000);
+		authenticatorPage.clickSaveButton();
+		System.out.println("test "+ authenticatorPage.getMessage());
+		Assert.assertEquals("Please specify authenticator code.", authenticatorPage.getMessage());
+
+		
+		// verify error message on Key page
+		driver.navigate().refresh();
+		authenticatorPage.switchToFrame();
+		authenticatorPage.clickManualModelLink();
+		authenticatorPage.clickSaveButton();
+		System.out.println("test "+ authenticatorPage.getMessage());
+		Assert.assertEquals("Please specify authenticator code.", authenticatorPage.getMessage());
+
+		authenticatorPage.setOneTimeCode("abc");
+		authenticatorPage.clickSaveButton();		
+		Assert.assertEquals("Invalid authenticator code.", authenticatorPage.getMessage());
+		Thread.sleep(10000);
+
+	}
+
     @AfterMethod
 	public void tearDown() {
 		driver.quit();
-	}
-   
-    
+	}   
     
 }
 
