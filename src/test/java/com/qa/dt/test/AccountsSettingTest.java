@@ -21,8 +21,16 @@ import com.qa.dt.page.LoginPage;
 import com.qa.dt.page.MyApplicationsPage;
 import com.qa.dt.page.PasswordPage;
 import com.qa.dt.page.ProjectSelection;
+import com.qa.dt.page.UserAccessKeysPage;
 import com.qa.dt.page.UserInformationPage;
 import com.qa.dt.util.ExtentManager;
+
+import java.awt.AWTException;
+import java.awt.Robot;
+import java.awt.Toolkit;
+import java.awt.datatransfer.StringSelection;
+import java.awt.event.KeyEvent;
+
 
 @Listeners(com.qa.dt.util.ListenerClass.class)
 public class AccountsSettingTest extends LoginintoTheApplicationTest {
@@ -36,6 +44,7 @@ public class AccountsSettingTest extends LoginintoTheApplicationTest {
 	DeleteUserPage deleteUserPage;
 	InvitationsPage invitationsPage;
 	MyApplicationsPage myApplicationsPage;
+	UserAccessKeysPage userAccessKeysPage;
 	
 	/**
 	 * @author Kesavan N
@@ -816,6 +825,112 @@ public class AccountsSettingTest extends LoginintoTheApplicationTest {
 
 		dashboardPage.clickUserInitialsLogo();			
 		dashboardPage.clickLogout();
+
+	}
+
+	/**
+	 * @author Kesavan N
+	 * @description  Verify User access keys in New Account Setting * 
+	 * @throws Exception
+	 */
+	@Test(priority = 7)
+	public void verifyUserAccessKeysPage() throws Exception {    	
+    	loginPage = new LoginPage();
+    	accountSettingsPage= new AccountSettingsPage();   
+		adminHomePage = new AdminHomePage(); 
+		dashboardPage = new DashboardPage();	
+		userInformationPage = new UserInformationPage();
+		userAccessKeysPage = new UserAccessKeysPage();
+		
+		
+		Properties loadProperties = loadProperties();		
+		
+    	ExtentManager.test.log(Status.INFO, "TC_Description - Verify user information page");	
+		adminHomePage.clickLeftNavigation();	    	
+		adminHomePage.clickAccountSettings();
+		switchOrCloseTabs(1, "switch");
+		
+		dashboardPage.clickUserAccessKeysLink();		
+
+	
+		// verify Generate New Access Key Button
+		waitForpageLoad();
+		Thread.sleep(10000);
+		Assert.assertTrue(userAccessKeysPage.generateNewAccessKeyButton().isDisplayed());
+		userAccessKeysPage.clickGenerateNewAccessKeyButton();
+
+		// verify copied message for user access keys
+		userAccessKeysPage.clickAccessKeyCopyButton();
+		Assert.assertEquals("Copied", userAccessKeysPage.getCopiedMessage());
+		userAccessKeysPage.clickSecretKeyCopyButton();
+		Assert.assertEquals("Copied", userAccessKeysPage.getCopiedMessage());
+		userAccessKeysPage.clickAccessKeyPopupcloseButton();
+
+		// verify access key download success message
+		userAccessKeysPage.clickGenerateNewAccessKeyButton();
+		userAccessKeysPage.clickAccessKeyPopupDownloadButton();
+		Assert.assertEquals("Success\n" +
+						"Your Access keys file has been downloaded successfully.", userAccessKeysPage.getMessage());
+		Thread.sleep(10000);
+
+		try {
+            Robot robot = new Robot();
+            robot.keyPress(KeyEvent.VK_ENTER);
+            robot.delay(300);			
+            robot.keyRelease(KeyEvent.VK_ENTER);
+			
+			robot.keyPress(KeyEvent.VK_SHIFT);
+			robot.keyPress(KeyEvent.VK_TAB);
+            robot.delay(300);
+			robot.keyRelease(KeyEvent.VK_SHIFT);
+			robot.keyRelease(KeyEvent.VK_TAB);
+			robot.delay(300);
+
+			robot.keyPress(KeyEvent.VK_ENTER);
+            robot.delay(300);			
+            robot.keyRelease(KeyEvent.VK_ENTER);
+        } catch (AWTException e) {
+            e.printStackTrace();
+        }
+
+		userAccessKeysPage.clickAccessKeyPopupcloseButton();
+		Thread.sleep(10000);
+
+		// verify revoke access key button	is enabled
+		if(loadProperties.getProperty("Theme").equals("Twinit")){			
+			Assert.assertTrue(userAccessKeysPage.revokeAccessKeyButton().isDisplayed());
+			userAccessKeysPage.clickRevokeAccessKeyButton();
+		} else if(loadProperties.getProperty("Theme").equals("Mirrana")){
+			Assert.assertTrue(userAccessKeysPage.revokeAccessKeyButtonMirrana().isDisplayed());
+			userAccessKeysPage.clickRevokeAccessKeyButtonMirrna();
+		}
+			
+
+		// verify delete access key downlod success message
+		userAccessKeysPage.clickDeleteAccessKeyCancelButton();
+		if(loadProperties.getProperty("Theme").equals("Twinit")){					
+			userAccessKeysPage.clickRevokeAccessKeyButton();
+		} else if(loadProperties.getProperty("Theme").equals("Mirrana")){			
+			userAccessKeysPage.clickRevokeAccessKeyButtonMirrna();
+		}
+		
+		userAccessKeysPage.clickDeleteAccessKeyButton();
+		Thread.sleep(10000);
+
+		// verify revoke access key button	
+		try{			
+			if(loadProperties.getProperty("Theme").equals("Twinit")){			
+				userAccessKeysPage.revokeAccessKeyButton().isDisplayed();			
+			} else if(loadProperties.getProperty("Theme").equals("Mirrana")){
+				userAccessKeysPage.revokeAccessKeyButtonMirrana().isDisplayed();			
+			}
+		}catch(Exception e){
+			System.out.println("err "+e.getMessage());
+			Assert.assertTrue(e.getMessage().contains("no such element: Unable to locate element:"));
+		}
+
+		userAccessKeysPage.clickCopyButton();
+		Assert.assertEquals("Copied", userAccessKeysPage.getCopyToggleText());	
 
 	}
 

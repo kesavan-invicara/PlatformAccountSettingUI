@@ -220,6 +220,12 @@ public class DashboardPage extends BaseClass {
 		waitForpageLoad();
 	}
 
+	public void clickUserAccessKeysLinkMirrana() throws Exception {
+		waitUntilElementVisibility(userAccessKeysMirrana());
+		elementClick(userAccessKeysMirrana());
+		waitForpageLoad();
+	}
+
 	public void clickMyApplicationsLink() throws Exception {
 		waitUntilElementVisibility(myApplications());
 		elementClick(myApplications());
