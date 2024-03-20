@@ -31,10 +31,8 @@ public class LoginPage extends CommonReusablesPage {
 		PageFactory.initElements(driver, this);
 	}
 
-	@FindBy(xpath = "(//div[@class='logo'])[1]")
-	private WebElement invicaraLogo;
-
-	
+	@FindBy(xpath = "(//div[@class='logo']/img)")
+	private WebElement logo;	
 
 	@FindBy(xpath = "(//button[@class='primary'])[1]")
 	private WebElement loginButton;
@@ -50,6 +48,20 @@ public class LoginPage extends CommonReusablesPage {
 	
 	@FindBy(xpath = "//h1[text()='Sign In']")
 	private static WebElement SignInHeaderName;
+
+	
+	public static WebElement favicon() {
+		return driver.findElement(By.xpath("/html/head/link[@rel='shortcut icon']"));
+	}
+
+	public static WebElement eusa() {
+		return driver.findElement(By.xpath("//*[@id='card']/div[1]/div[@class='fineprint']/a[1]"));
+	}
+
+	public static WebElement privacyPolicy() {
+		return driver.findElement(By.xpath("//*[@id='card']/div[1]/div[@class='fineprint']/a[2]"));
+	}
+	
 
 	public static WebElement SignUpButtonOnLoginPage() {
 		return driver.findElement(By.xpath("//button[contains(@class, 'secondary') and text() = 'Sign Up']"));
@@ -131,9 +143,28 @@ public class LoginPage extends CommonReusablesPage {
 	
 
 	public boolean invicaroLogoIsDisplayed() throws Exception {
-		boolean displayed = invicaraLogo.isDisplayed();
+		boolean displayed = logo.isDisplayed();
 		return displayed;
 	}
+
+	public String getLogoImageSrc() throws Exception {
+		return logo.getAttribute("src");
+	}
+
+	public String getfavIconHref() throws Exception {
+		return favicon().getAttribute("href");
+	}
+
+	public String getEUSAHref() throws Exception {
+		return eusa().getAttribute("href");
+	}
+
+	public String getPrivacyPolicyHref() throws Exception {
+		return privacyPolicy().getAttribute("href");
+	}
+
+	
+
 	public boolean SignInNameIsDisplayed() throws Exception {
 		boolean displayed = SignInHeaderName.isDisplayed();
 		return displayed;

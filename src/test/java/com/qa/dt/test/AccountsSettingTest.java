@@ -1073,6 +1073,46 @@ public class AccountsSettingTest extends LoginintoTheApplicationTest {
 
 	}
 
+	/**
+	 * @author Kesavan N
+	 * @description  Verify Login Page Theme* 
+	 * @throws Exception
+	 */  
+
+	 @Test(priority = 9)
+	 public void verifyLoginPageTheme() throws Exception {    	
+		 loginPage = new LoginPage();
+		 AdminHomePage adminHomePage = new AdminHomePage();
+ 
+		 Properties loadProperties = loadProperties();
+ 
+		 adminHomePage.clickLeftNavigation();  		
+		 Thread.sleep(10000);
+		 adminHomePage.clickSignout();
+		 Thread.sleep(10000);
+ 
+		 // vreify title
+		 if(loadProperties.getProperty("Theme").equals("Twinit")){
+			 Assert.assertEquals("Twinit - Sign In", driver.getTitle());
+			 Assert.assertTrue(loginPage.getfavIconHref().contains("fe/images"));
+			 Assert.assertTrue(loginPage.getLogoImageSrc().contains("api/fe/images"));
+			 Assert.assertEquals("https://invicara.com/terms-of-service/", lp.getEUSAHref());
+			 Assert.assertEquals("https://invicara.com/privacy-policy/", lp.getPrivacyPolicyHref());
+		 } else if(loadProperties.getProperty("Theme").equals("Mirrana")){
+			 Assert.assertEquals("Mirrana - Sign In", driver.getTitle());
+			 System.out.println("loginPage.getLogoImageSrc() "+loginPage.getLogoImageSrc());
+			 System.out.println("loginPage.getfavIconHref() "+loginPage.getfavIconHref());
+			 Assert.assertTrue(loginPage.getLogoImageSrc().contains("api/themes/mirrana/images/logo"));
+			 Assert.assertTrue(loginPage.getfavIconHref().contains("api/themes/mirrana/images/favicon"));
+			 Assert.assertEquals("https://tonomus.neom.com/en-us/terms-of-use", lp.getEUSAHref());
+			 Assert.assertEquals("https://tonomus.neom.com/en-us/privacy-policy", lp.getPrivacyPolicyHref());
+		 }
+		 loginPage.LoginTest(loadProperties.getProperty("Rfusername"),loadProperties.getProperty("RfPassword"));
+
+	 } 
+
+
+
     @AfterMethod
 	public void tearDown() {
 		driver.quit();
