@@ -75,7 +75,7 @@ public class InvitationsPage extends BaseClass {
 		System.out.println(noOfRows);
         String applicationNameInInviteTable = "";
         for(int i=2;i<noOfRows+1;i++){
-            applicationNameInInviteTable = driver.findElement(By.xpath("//*[@id='table-container']/table[@class='my-dynamic-table']/tr["+noOfRows+"]/td[1]")).getText();
+            applicationNameInInviteTable = driver.findElement(By.xpath("//*[@id='table-container']/table[@class='my-dynamic-table']/tr["+noOfRows+"]/td[2]")).getText();
 			System.out.println("applicationNameInInviteTable "+applicationNameInInviteTable);
             if(applicationNameInInviteTable.equals(applicationName)){
                 elementClick(acceptInvite(i));
@@ -95,7 +95,7 @@ public class InvitationsPage extends BaseClass {
 		System.out.println(noOfRows);
         String applicationNameInInviteTable = "";
         for(int i=2;i<noOfRows+1;i++){
-            applicationNameInInviteTable = driver.findElement(By.xpath("//*[@id='table-container']/table[@class='my-dynamic-table']/tr["+noOfRows+"]/td[1]")).getText();
+            applicationNameInInviteTable = driver.findElement(By.xpath("//*[@id='table-container']/table[@class='my-dynamic-table']/tr["+noOfRows+"]/td[2]")).getText();
 			System.out.println("applicationNameInInviteTable "+applicationNameInInviteTable);
             if(applicationNameInInviteTable.equals(applicationName)){
                 elementClick(rejectInvite(i));

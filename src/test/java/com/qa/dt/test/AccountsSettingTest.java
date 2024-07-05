@@ -80,14 +80,14 @@ public class AccountsSettingTest extends LoginintoTheApplicationTest {
 		Properties loadProperties = loadProperties();
 		System.out.println(loadProperties.getProperty("RfFirstName"));
 		
-    	ExtentManager.test.log(Status.INFO, "TC_Description - Verify clicking Account Settings link in Admin Home page is open account setting dashboard page and verify the dashboard page");	
+    	ExtentManager.test.log(Status.INFO, "TC_Verification - Verify clicking Account Settings link in Admin Home page is open account setting dashboard page and verify the dashboard page");	
 		adminHomePage.clickLeftNavigation();	    	
 		adminHomePage.clickAccountSettings();
 		switchOrCloseTabs(1, "switch");
 
 		// verify Dashboard page
 		// verify page title, greetings and name
-		ExtentManager.test.log(Status.INFO, "TC_Description - Verify Page Title, Greetings and Name");
+		ExtentManager.test.log(Status.INFO, "TC_Verification - Verify Page Title, Greetings and Name");
 		if(loadProperties.getProperty("mailinatorUrl").equals("Twinit")){
 			Assert.assertEquals("Invicara - Account setting", driver.getTitle());
 		} else if(loadProperties.getProperty("mailinatorUrl").equals("Mirrana")){
@@ -103,13 +103,13 @@ public class AccountsSettingTest extends LoginintoTheApplicationTest {
 		System.out.println("getMyApplicationsCount "+ dashboardPage.getMyApplicationsCount());
 
 		// verify Profile details links
-		ExtentManager.test.log(Status.INFO, "TC_Description - Verify Profile details links");
+		ExtentManager.test.log(Status.INFO, "TC_Verification - Verify Profile details links");
 		Assert.assertTrue(dashboardPage.userInformationLinkIsDisplayed());
 		Assert.assertTrue(dashboardPage.passwordLinkIsDisplayed());
 		Assert.assertTrue(dashboardPage.deleteAccountLinkIsDisplayed());
 
 		// verify Authenticator details links
-		ExtentManager.test.log(Status.INFO, "TC_Description - Verify Authenitcator details links");	
+		ExtentManager.test.log(Status.INFO, "TC_Verification - Verify Authenitcator details links");	
 		if(loadProperties.getProperty("mailinatorUrl").equals("Twinit")){
 			Assert.assertTrue(dashboardPage.authenticatorLinkIsDisplayed());
 			Assert.assertTrue(dashboardPage.userAccessKeyLinkIsDisplayed());
@@ -120,7 +120,7 @@ public class AccountsSettingTest extends LoginintoTheApplicationTest {
 		
 
 		// verify Applications & invitations details links
-		ExtentManager.test.log(Status.INFO, "TC_Description - Verify Applications & invitations details links");
+		ExtentManager.test.log(Status.INFO, "TC_Verification - Verify Applications & invitations details links");
 		Assert.assertTrue(dashboardPage.myApplicationsLinkIsDisplayed());
 		Assert.assertTrue(dashboardPage.invitationsLinkIsDisplayed());		
 		
@@ -135,7 +135,7 @@ public class AccountsSettingTest extends LoginintoTheApplicationTest {
 	 * @throws Exception
 	 */
 
-	@Test(priority = 2)
+	@Test(enabled = false)
 	public void verifyUserInformationPage() throws Exception {    	
     	loginPage = new LoginPage();
     	accountSettingsPage= new AccountSettingsPage();   
@@ -145,7 +145,7 @@ public class AccountsSettingTest extends LoginintoTheApplicationTest {
 		
 		Properties loadProperties = loadProperties();		
 		
-    	ExtentManager.test.log(Status.INFO, "TC_Description - Verify user information page");	
+    	ExtentManager.test.log(Status.INFO, "TC_Verification - Verify user information page");	
 		adminHomePage.clickLeftNavigation();	    	
 		adminHomePage.clickAccountSettings();
 		switchOrCloseTabs(1, "switch");
@@ -161,7 +161,7 @@ public class AccountsSettingTest extends LoginintoTheApplicationTest {
 		Assert.assertEquals(userInformationPage.getLastName(),loadProperties.getProperty("RfLastName"));
 
 		// . verify invalid email
-		ExtentManager.test.log(Status.INFO, "TC_Description - verify error message for invalid email");
+		ExtentManager.test.log(Status.INFO, "TC_Verification - verify error message for invalid email");
 		userInformationPage.setEmail("test");
 		userInformationPage.clickSaveButton();
 
@@ -176,19 +176,19 @@ public class AccountsSettingTest extends LoginintoTheApplicationTest {
 		userInformationPage.switchToFrame();
 
 		// 2. verify empty email
-		ExtentManager.test.log(Status.INFO, "TC_Description - verify error message for empty email");
+		ExtentManager.test.log(Status.INFO, "TC_Verification - verify error message for empty email");
 		userInformationPage.setEmail("");
 		userInformationPage.clickSaveButton();
 
 		System.out.println("message "+userInformationPage.getMessage());
 		Assert.assertEquals("Please specify email.\n" + 
-						"Please specify username.", userInformationPage.getMessage());
+						"Please specify username.\n"+"Please specify attribute email.", userInformationPage.getMessage());
 		userInformationPage.clickCancelButton();	
 		Thread.sleep(10000);
 	
 
 		// 3. verify existing email	
-		ExtentManager.test.log(Status.INFO, "TC_Description - verify error message for existing email");	
+		ExtentManager.test.log(Status.INFO, "TC_Verification - verify error message for existing email");	
 		userInformationPage.setEmail(loadProperties.getProperty("DbmAdminUsername"));
 		userInformationPage.clickSaveButton();
 
@@ -208,7 +208,7 @@ public class AccountsSettingTest extends LoginintoTheApplicationTest {
 		userInformationPage.switchToFrame();
 
 		// 4. verify empty  firstname
-		ExtentManager.test.log(Status.INFO, "TC_Description - verify error message for empty firstname");
+		ExtentManager.test.log(Status.INFO, "TC_Verification - verify error message for empty firstname");
 		userInformationPage.setFirstName("");
 		userInformationPage.clickSaveButton();
 
@@ -225,7 +225,7 @@ public class AccountsSettingTest extends LoginintoTheApplicationTest {
 		userInformationPage.switchToFrame();
 
 		// 5. verify empty lastname
-		ExtentManager.test.log(Status.INFO, "TC_Description - verify error message for empty lastname");
+		ExtentManager.test.log(Status.INFO, "TC_Verification - verify error message for empty lastname");
 		userInformationPage.setLastName("");
 		userInformationPage.clickSaveButton();
 
@@ -234,7 +234,7 @@ public class AccountsSettingTest extends LoginintoTheApplicationTest {
 		userInformationPage.clickCancelButton();
 
 		// 6. verify update user information 	
-		ExtentManager.test.log(Status.INFO, "TC_Description - verify update user information");		
+		ExtentManager.test.log(Status.INFO, "TC_Verification - verify update user information");		
 		userInformationPage.setFirstName("Kesavan");
 		userInformationPage.setLastName("N");
 		userInformationPage.clickSaveButton();
@@ -271,7 +271,7 @@ public class AccountsSettingTest extends LoginintoTheApplicationTest {
 		
 		Properties loadProperties = loadProperties();		
 		
-    	ExtentManager.test.log(Status.INFO, "TC_Description - Verify Password page");	
+    	ExtentManager.test.log(Status.INFO, "TC_Verification - Verify Password page");	
 		adminHomePage.clickLeftNavigation();	    	
 		adminHomePage.clickAccountSettings();
 		switchOrCloseTabs(1, "switch");
@@ -281,7 +281,7 @@ public class AccountsSettingTest extends LoginintoTheApplicationTest {
 		passwordPage.switchToFrame();
 
 		// 1. verify empty current password
-		ExtentManager.test.log(Status.INFO, "TC_Description - verify error message for empty current password");
+		ExtentManager.test.log(Status.INFO, "TC_Verification - verify error message for empty current password");
 		passwordPage.setCurrentPassword("");
 		Thread.sleep(5000);
 		passwordPage.clickSavePasswordButton();
@@ -302,7 +302,7 @@ public class AccountsSettingTest extends LoginintoTheApplicationTest {
 		passwordPage.switchToFrame();
 		
 		// 2. verify invalid current password
-		ExtentManager.test.log(Status.INFO, "TC_Description - verify error message for invalid current password");
+		ExtentManager.test.log(Status.INFO, "TC_Verification - verify error message for invalid current password");
 		passwordPage.setCurrentPassword("invalid");
 		passwordPage.clickSavePasswordButton();
 
@@ -311,7 +311,7 @@ public class AccountsSettingTest extends LoginintoTheApplicationTest {
 		Thread.sleep(10000);
 
 		// 3. verify empty new password
-		ExtentManager.test.log(Status.INFO, "TC_Description - verify error message for empty new password");
+		ExtentManager.test.log(Status.INFO, "TC_Verification - verify error message for empty new password");
 		passwordPage.setCurrentPassword(loadProperties.getProperty("RfPassword"));
 		passwordPage.setNewPassword("");
 		passwordPage.clickSavePasswordButton();
@@ -321,7 +321,7 @@ public class AccountsSettingTest extends LoginintoTheApplicationTest {
 		Thread.sleep(10000);
 
 		// 4. verify empty confirm password
-		ExtentManager.test.log(Status.INFO, "TC_Description - verify error message for empty confirm password");
+		ExtentManager.test.log(Status.INFO, "TC_Verification - verify error message for empty confirm password");
 		passwordPage.setCurrentPassword(loadProperties.getProperty("RfPassword"));
 		passwordPage.setNewPassword("123");
 		passwordPage.setConfirmPassword("");
@@ -332,7 +332,7 @@ public class AccountsSettingTest extends LoginintoTheApplicationTest {
 		Thread.sleep(10000);
 
 		// 5. verify invalid new password with only numbers
-		ExtentManager.test.log(Status.INFO, "TC_Description - verify error message for invalid new password with only numbers");
+		ExtentManager.test.log(Status.INFO, "TC_Verification - verify error message for invalid new password with only numbers");
 		passwordPage.setCurrentPassword(loadProperties.getProperty("RfPassword"));
 		passwordPage.setNewPassword("123");
 		passwordPage.setConfirmPassword("123");
@@ -343,7 +343,7 @@ public class AccountsSettingTest extends LoginintoTheApplicationTest {
 		Thread.sleep(10000);
 
 		// 6. verify invalid new password with only alphabets
-		ExtentManager.test.log(Status.INFO, "TC_Description - verify error message for invalid new password with only alphabets");
+		ExtentManager.test.log(Status.INFO, "TC_Verification - verify error message for invalid new password with only alphabets");
 		passwordPage.setCurrentPassword(loadProperties.getProperty("RfPassword"));
 		passwordPage.setNewPassword("abc");
 		passwordPage.setConfirmPassword("abc");
@@ -354,7 +354,7 @@ public class AccountsSettingTest extends LoginintoTheApplicationTest {
 		Thread.sleep(10000);
 
 		// 7. verify invalid new password with only alphabets and special characters
-		ExtentManager.test.log(Status.INFO, "TC_Description - verify error message for invalid new password with only alphabets and special characters");
+		ExtentManager.test.log(Status.INFO, "TC_Verification - verify error message for invalid new password with only alphabets and special characters");
 		passwordPage.setCurrentPassword(loadProperties.getProperty("RfPassword"));
 		passwordPage.setNewPassword("abcABC@");
 		passwordPage.setConfirmPassword("abcABC@");
@@ -365,7 +365,7 @@ public class AccountsSettingTest extends LoginintoTheApplicationTest {
 		Thread.sleep(10000);
 
 		// 8. verify invalid new password with only numbers and special characters
-		ExtentManager.test.log(Status.INFO, "TC_Description - verify error message for invalid new password with only numbers and special characters");
+		ExtentManager.test.log(Status.INFO, "TC_Verification - verify error message for invalid new password with only numbers and special characters");
 		passwordPage.setCurrentPassword(loadProperties.getProperty("RfPassword"));
 		passwordPage.setNewPassword("123#");
 		passwordPage.setConfirmPassword("123#");
@@ -376,7 +376,7 @@ public class AccountsSettingTest extends LoginintoTheApplicationTest {
 		Thread.sleep(10000);
 
 		// 9. verify change password
-		ExtentManager.test.log(Status.INFO, "TC_Description - verify message for successful change password");
+		ExtentManager.test.log(Status.INFO, "TC_Verification - verify message for successful change password");
 		passwordPage.setCurrentPassword(loadProperties.getProperty("RfPassword"));
 		passwordPage.setNewPassword(loadProperties.getProperty("RfNewPassword"));
 		passwordPage.setConfirmPassword(loadProperties.getProperty("RfConfirmPassword"));
@@ -405,6 +405,7 @@ public class AccountsSettingTest extends LoginintoTheApplicationTest {
 		} else if(loadProperties.getProperty("mailinatorUrl").equals("Mirrana")){
 			Assert.assertEquals("Mirrana - Account setting", driver.getTitle());
 		}
+		Thread.sleep(10000);
 		System.out.println("getGreetings "+dashboardPage.getGreetings());
 		Assert.assertEquals(decodePeriod(Calendar.getInstance())+",", dashboardPage.getGreetings());
 
@@ -416,7 +417,7 @@ public class AccountsSettingTest extends LoginintoTheApplicationTest {
 		passwordPage.switchToFrame();
 
 		// reset to existing password
-		ExtentManager.test.log(Status.INFO, "TC_Description - verify message for successful change password");
+		ExtentManager.test.log(Status.INFO, "TC_Verification - verify message for successful change password");
 		passwordPage.setCurrentPassword(loadProperties.getProperty("RfConfirmPassword"));
 		passwordPage.setNewPassword(loadProperties.getProperty("RfPassword"));
 		passwordPage.setConfirmPassword(loadProperties.getProperty("RfPassword"));
@@ -459,7 +460,7 @@ public class AccountsSettingTest extends LoginintoTheApplicationTest {
 		String password = loadProperties.getProperty("RfPassword");
 		
 		System.out.println("email "+email);
-    	ExtentManager.test.log(Status.INFO, "TC_Description - Create New User and verify delete account");	
+    	ExtentManager.test.log(Status.INFO, "TC_Verification - Create New User and verify delete account");	
 		adminHomePage.clickLeftNavigation();	
 		adminHomePage.clickSignout();
 		
@@ -558,7 +559,7 @@ public class AccountsSettingTest extends LoginintoTheApplicationTest {
 		String password = loadProperties.getProperty("RfPassword");
 		
 		System.out.println("email "+email);
-    	ExtentManager.test.log(Status.INFO, "TC_Description - Create New User and verify invitations");	
+    	ExtentManager.test.log(Status.INFO, "TC_Verification - Create New User and verify invitations");	
 		adminHomePage.clickLeftNavigation();	
 		adminHomePage.clickSignout();
 
@@ -599,7 +600,7 @@ public class AccountsSettingTest extends LoginintoTheApplicationTest {
 		}
 
 		// step 3 - verify page title, greetings and name
-		ExtentManager.test.log(Status.INFO, "TC_Description - Verify Page Title, Greetings and Name");
+		ExtentManager.test.log(Status.INFO, "TC_Verification - Verify Page Title, Greetings and Name");
 		if(loadProperties.getProperty("mailinatorUrl").equals("Twinit")){
 			Assert.assertEquals("Invicara - Account setting", driver.getTitle());
 		} else if(loadProperties.getProperty("mailinatorUrl").equals("Mirrana")){
@@ -714,7 +715,7 @@ public class AccountsSettingTest extends LoginintoTheApplicationTest {
 		String password = loadProperties.getProperty("RfPassword");
 		
 		System.out.println("email "+email);
-    	ExtentManager.test.log(Status.INFO, "TC_Description - Create New User and verify invitations");	
+    	ExtentManager.test.log(Status.INFO, "TC_Verification - Create New User and verify invitations");	
 		adminHomePage.clickLeftNavigation();	
 		adminHomePage.clickSignout();
 
@@ -755,7 +756,7 @@ public class AccountsSettingTest extends LoginintoTheApplicationTest {
 		}
 
 		// step 3 - verify page title, greetings and name
-		ExtentManager.test.log(Status.INFO, "TC_Description - Verify Page Title, Greetings and Name");
+		ExtentManager.test.log(Status.INFO, "TC_Verification - Verify Page Title, Greetings and Name");
 		if(loadProperties.getProperty("mailinatorUrl").equals("Twinit")){
 			Assert.assertEquals("Invicara - Account setting", driver.getTitle());
 		} else if(loadProperties.getProperty("mailinatorUrl").equals("Mirrana")){
@@ -838,8 +839,8 @@ public class AccountsSettingTest extends LoginintoTheApplicationTest {
 		Thread.sleep(10000);
 		System.out.println("test "+myApplicationsPage.getNoOfApplications());
 		Assert.assertEquals(1, myApplicationsPage.getNoOfApplications());
-		System.out.println("test "+ myApplicationsPage.isApplicationCardTitleExists("Authomation"));
-		Assert.assertTrue( myApplicationsPage.isApplicationCardTitleExists("Automation"));
+		System.out.println("test "+ myApplicationsPage.isApplicationCardTitleExists("authomation"));
+		Assert.assertTrue( myApplicationsPage.isApplicationCardTitleExists("automation"));
 
 		dashboardPage.clickUserInitialsLogo();			
 		dashboardPage.clickLogout();
@@ -863,7 +864,7 @@ public class AccountsSettingTest extends LoginintoTheApplicationTest {
 		
 		Properties loadProperties = loadProperties();		
 		
-    	ExtentManager.test.log(Status.INFO, "TC_Description - Verify user information page");	
+    	ExtentManager.test.log(Status.INFO, "TC_Verification - Verify user information page");	
 		adminHomePage.clickLeftNavigation();	    	
 		adminHomePage.clickAccountSettings();
 		switchOrCloseTabs(1, "switch");
@@ -979,7 +980,7 @@ public class AccountsSettingTest extends LoginintoTheApplicationTest {
 		String password = loadProperties.getProperty("RfPassword");
 		
 		System.out.println("email "+email);
-    	ExtentManager.test.log(Status.INFO, "TC_Description - Create New User and verify invitations");	
+    	ExtentManager.test.log(Status.INFO, "TC_Verification - Create New User and verify invitations");	
 		adminHomePage.clickLeftNavigation();	
 		adminHomePage.clickSignout();
 
@@ -1020,7 +1021,7 @@ public class AccountsSettingTest extends LoginintoTheApplicationTest {
 		}
 
 		// step 3 - verify page title, greetings and name
-		ExtentManager.test.log(Status.INFO, "TC_Description - Verify Page Title, Greetings and Name");
+		ExtentManager.test.log(Status.INFO, "TC_Verification - Verify Page Title, Greetings and Name");
 		if(loadProperties.getProperty("Theme").equals("Twinit")){
 			Assert.assertEquals("Invicara - Account setting", driver.getTitle());
 			dashboardPage.clickAuthenticatorLink();

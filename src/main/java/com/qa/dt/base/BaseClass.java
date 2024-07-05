@@ -131,8 +131,8 @@ public class BaseClass {
 		try {
 			if (browserName.equalsIgnoreCase("chrome")) {
 				WebDriverManager.chromedriver().setup();
-//				System.setProperty("webdriver.chrome.driver",
-//				System.getProperty("user.dir") + "\\chrome\\chromedriver.exe");
+				System.setProperty("webdriver.chrome.driver",
+				System.getProperty("user.dir") + "\\chrome\\chromedriver.exe");
 				ChromeOptions option= new ChromeOptions();
 				option.addArguments("window-size=1366,768");
 				option.addArguments("disable-infobars");

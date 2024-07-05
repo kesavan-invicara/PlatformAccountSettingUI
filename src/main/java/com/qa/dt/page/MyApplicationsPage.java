@@ -81,7 +81,7 @@ public class MyApplicationsPage extends BaseClass {
 		String appName = "";
 		boolean isAppTitleExists = false;
 		for(int i=1;i<listOfApps+1;i++){
-			appName = driver.findElement(By.xpath("//div[@id='app-container']//div/span[@class='applicationCardTitleText']["+i+"]")).getText();
+			appName = driver.findElement(By.xpath("//div[@id='app-container']//div/span[@class='application-text']["+i+"]")).getText();
 			if(applicationName.equalsIgnoreCase(appName.trim())){
 				System.out.println("appName "+ appName);
 				isAppTitleExists = true;
