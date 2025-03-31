@@ -42,7 +42,7 @@ public class DashboardPage extends BaseClass {
 	}
 
 	public WebElement userInformation() {
-		return driver.findElement(By.xpath("//*[@id='sourceId1']//span[contains(text(),'User information')]"));
+		return driver.findElement(By.xpath("//*[@id='sourceId1']/span/span[contains(text(),'User information')]"));
 	}
 
 	public WebElement password() {

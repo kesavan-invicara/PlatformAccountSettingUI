@@ -52,6 +52,22 @@ public class AdminHomePage extends CommonReusablesPage {
 	public static WebElement leftNavigation(){
 		return driver.findElement(By.xpath("//*[@id='IfefSidePanelContent']/div/div/div/div[1]/span"));
 	}
+
+	public static WebElement welcomePopupCloseButton() {
+		return driver.findElement(By.xpath("//*[@id=':r8:']/button"));
+	}
+
+	public static WebElement profileMenu() {
+		return driver.findElement(By.xpath("//div[@class='profile-menu']/button"));
+	}
+
+	public static WebElement firstProfileMenuItem() {
+		return driver.findElement(By.xpath("//ul[@role='menu']//li[@role='menuitem' and @tabindex='-1']/div"));
+	}
+
+	public static WebElement logoutMenuItem() {
+		return driver.findElement(By.xpath("//ul[@role='menu']//li[contains(text(),'Logout')]"));
+	}
 	
 	public static WebElement leftNavigationOnContent(){
 		return driver.findElement(By.xpath("//*[@id=\"IfefSidePanelContent\"]/div/div/div/div/div[1]/span/div/button[1]"));
@@ -117,6 +133,53 @@ public class AdminHomePage extends CommonReusablesPage {
 		Thread.sleep(10000);	
 		waitUntilElementVisibility(leftNavigation());	
 		elementClick(leftNavigation());
+	}
+
+	/**
+	 * click welcomePopupCloseButton 
+	 *  
+	 * @throws Exception
+	 */
+	public void clickWelcomePopupCloseButton() throws Exception {
+		Thread.sleep(10000);	
+		waitUntilElementVisibility(welcomePopupCloseButton());	
+		elementClick(welcomePopupCloseButton());
+	}
+
+
+	/**
+	 * click profile menu 
+	 *  
+	 * @throws Exception
+	 */
+	public void clickProfileMenu() throws Exception {
+		Thread.sleep(10000);	
+		waitUntilElementVisibility(profileMenu());	
+		elementClick(profileMenu());
+	}
+
+	
+
+	/**
+	 * click first profile menu item
+	 *  
+	 * @throws Exception
+	 */
+	public void clickFirstProfileMenuItem() throws Exception {
+		Thread.sleep(10000);	
+		waitUntilElementVisibility(firstProfileMenuItem());	
+		elementClick(firstProfileMenuItem());
+	}
+
+	/**
+	 * click logout on profile menu item
+	 *  
+	 * @throws Exception
+	 */
+	public void clickLogoutMenuItem() throws Exception {
+		Thread.sleep(10000);	
+		waitUntilElementVisibility(logoutMenuItem());	
+		elementClick(logoutMenuItem());
 	}
 
 	/**

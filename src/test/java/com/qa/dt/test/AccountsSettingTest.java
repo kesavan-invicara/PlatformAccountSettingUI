@@ -81,8 +81,11 @@ public class AccountsSettingTest extends LoginintoTheApplicationTest {
 		System.out.println(loadProperties.getProperty("RfFirstName"));
 		
     	ExtentManager.test.log(Status.INFO, "TC_Verification - Verify clicking Account Settings link in Admin Home page is open account setting dashboard page and verify the dashboard page");	
-		adminHomePage.clickLeftNavigation();	    	
-		adminHomePage.clickAccountSettings();
+		adminHomePage.clickWelcomePopupCloseButton();
+		adminHomePage.clickProfileMenu();
+		adminHomePage.clickFirstProfileMenuItem();
+		// adminHomePage.clickLeftNavigation();	    	
+		// adminHomePage.clickAccountSettings();
 		switchOrCloseTabs(1, "switch");
 
 		// verify Dashboard page
@@ -135,7 +138,7 @@ public class AccountsSettingTest extends LoginintoTheApplicationTest {
 	 * @throws Exception
 	 */
 
-	@Test(enabled = false)
+	@Test(priority = 2)
 	public void verifyUserInformationPage() throws Exception {    	
     	loginPage = new LoginPage();
     	accountSettingsPage= new AccountSettingsPage();   
@@ -146,8 +149,11 @@ public class AccountsSettingTest extends LoginintoTheApplicationTest {
 		Properties loadProperties = loadProperties();		
 		
     	ExtentManager.test.log(Status.INFO, "TC_Verification - Verify user information page");	
-		adminHomePage.clickLeftNavigation();	    	
-		adminHomePage.clickAccountSettings();
+		adminHomePage.clickWelcomePopupCloseButton();
+		adminHomePage.clickProfileMenu();
+		adminHomePage.clickFirstProfileMenuItem();
+		// adminHomePage.clickLeftNavigation();	    	
+		// adminHomePage.clickAccountSettings();
 		switchOrCloseTabs(1, "switch");
 		
 		dashboardPage.clickUserInformationLink();
@@ -192,6 +198,7 @@ public class AccountsSettingTest extends LoginintoTheApplicationTest {
 		userInformationPage.setEmail(loadProperties.getProperty("DbmAdminUsername"));
 		userInformationPage.clickSaveButton();
 
+		Thread.sleep(1000);
 		System.out.println("message "+userInformationPage.getMessage());
 		Assert.assertEquals("Email already exists.\n" + 
 						"Username already exists.\n" + 
@@ -213,7 +220,7 @@ public class AccountsSettingTest extends LoginintoTheApplicationTest {
 		userInformationPage.clickSaveButton();
 
 		System.out.println("message "+userInformationPage.getMessage());
-		Assert.assertEquals("Please specify first name.", userInformationPage.getMessage());
+		Assert.assertEquals("Please specify attribute firstName.", userInformationPage.getMessage());
 		userInformationPage.clickCancelButton();
 		Thread.sleep(5000);
 
@@ -230,7 +237,7 @@ public class AccountsSettingTest extends LoginintoTheApplicationTest {
 		userInformationPage.clickSaveButton();
 
 		System.out.println("message "+userInformationPage.getMessage());
-		Assert.assertEquals("Please specify last name.", userInformationPage.getMessage());
+		Assert.assertEquals("Please specify attribute lastName.", userInformationPage.getMessage());
 		userInformationPage.clickCancelButton();
 
 		// 6. verify update user information 	
@@ -238,6 +245,7 @@ public class AccountsSettingTest extends LoginintoTheApplicationTest {
 		userInformationPage.setFirstName("Kesavan");
 		userInformationPage.setLastName("N");
 		userInformationPage.clickSaveButton();
+		Thread.sleep(3000);
 
 		System.out.println("message "+userInformationPage.getMessage());
 		Assert.assertEquals("Your account has been updated.", userInformationPage.getMessage());		
@@ -272,8 +280,11 @@ public class AccountsSettingTest extends LoginintoTheApplicationTest {
 		Properties loadProperties = loadProperties();		
 		
     	ExtentManager.test.log(Status.INFO, "TC_Verification - Verify Password page");	
-		adminHomePage.clickLeftNavigation();	    	
-		adminHomePage.clickAccountSettings();
+		adminHomePage.clickWelcomePopupCloseButton();
+		adminHomePage.clickProfileMenu();
+		adminHomePage.clickFirstProfileMenuItem();
+		// adminHomePage.clickLeftNavigation();	    	
+		// adminHomePage.clickAccountSettings();
 		switchOrCloseTabs(1, "switch");
 		
 		dashboardPage.clickPasswordLink();
@@ -314,7 +325,9 @@ public class AccountsSettingTest extends LoginintoTheApplicationTest {
 		ExtentManager.test.log(Status.INFO, "TC_Verification - verify error message for empty new password");
 		passwordPage.setCurrentPassword(loadProperties.getProperty("RfPassword"));
 		passwordPage.setNewPassword("");
-		passwordPage.clickSavePasswordButton();
+		passwordPage.clickSavePasswordButton(); 
+		Thread.sleep(2000);
+		
 
 		System.out.println("message "+passwordPage.getMessage());
 		Assert.assertEquals("Please specify password.", passwordPage.getMessage());	
@@ -326,6 +339,7 @@ public class AccountsSettingTest extends LoginintoTheApplicationTest {
 		passwordPage.setNewPassword("123");
 		passwordPage.setConfirmPassword("");
 		passwordPage.clickSavePasswordButton();
+		Thread.sleep(2000);
 
 		System.out.println("message "+passwordPage.getMessage());
 		Assert.assertEquals("Password confirmation doesn't match.", passwordPage.getMessage());	
@@ -337,6 +351,7 @@ public class AccountsSettingTest extends LoginintoTheApplicationTest {
 		passwordPage.setNewPassword("123");
 		passwordPage.setConfirmPassword("123");
 		passwordPage.clickSavePasswordButton();
+		Thread.sleep(2000);
 
 		System.out.println("message "+passwordPage.getMessage());
 		Assert.assertEquals("Invalid password: must contain at least 1 special characters.", passwordPage.getMessage());	
@@ -348,6 +363,7 @@ public class AccountsSettingTest extends LoginintoTheApplicationTest {
 		passwordPage.setNewPassword("abc");
 		passwordPage.setConfirmPassword("abc");
 		passwordPage.clickSavePasswordButton();
+		Thread.sleep(2000);
 
 		System.out.println("message "+passwordPage.getMessage());
 		Assert.assertEquals("Invalid password: must contain at least 1 special characters.", passwordPage.getMessage());	
@@ -359,6 +375,7 @@ public class AccountsSettingTest extends LoginintoTheApplicationTest {
 		passwordPage.setNewPassword("abcABC@");
 		passwordPage.setConfirmPassword("abcABC@");
 		passwordPage.clickSavePasswordButton();
+		Thread.sleep(2000);
 
 		System.out.println("message "+passwordPage.getMessage());
 		Assert.assertEquals("Invalid password: minimum length 8.", passwordPage.getMessage());	
@@ -370,6 +387,7 @@ public class AccountsSettingTest extends LoginintoTheApplicationTest {
 		passwordPage.setNewPassword("123#");
 		passwordPage.setConfirmPassword("123#");
 		passwordPage.clickSavePasswordButton();
+		Thread.sleep(2000);
 
 		System.out.println("message "+passwordPage.getMessage());
 		Assert.assertEquals("Invalid password: must contain at least 1 upper case characters.", passwordPage.getMessage());	
@@ -381,6 +399,7 @@ public class AccountsSettingTest extends LoginintoTheApplicationTest {
 		passwordPage.setNewPassword(loadProperties.getProperty("RfNewPassword"));
 		passwordPage.setConfirmPassword(loadProperties.getProperty("RfConfirmPassword"));
 		passwordPage.clickSavePasswordButton();
+		Thread.sleep(2000);
 
 		System.out.println("message "+passwordPage.getMessage());
 		Assert.assertEquals("Your password has been updated.", passwordPage.getMessage());	
@@ -422,6 +441,7 @@ public class AccountsSettingTest extends LoginintoTheApplicationTest {
 		passwordPage.setNewPassword(loadProperties.getProperty("RfPassword"));
 		passwordPage.setConfirmPassword(loadProperties.getProperty("RfPassword"));
 		passwordPage.clickSavePasswordButton();
+		Thread.sleep(2000);
 
 		System.out.println("message "+passwordPage.getMessage());
 		Assert.assertEquals("Your password has been updated.", passwordPage.getMessage());	
@@ -560,11 +580,15 @@ public class AccountsSettingTest extends LoginintoTheApplicationTest {
 		
 		System.out.println("email "+email);
     	ExtentManager.test.log(Status.INFO, "TC_Verification - Create New User and verify invitations");	
-		adminHomePage.clickLeftNavigation();	
-		adminHomePage.clickSignout();
+		adminHomePage.clickWelcomePopupCloseButton();
+		adminHomePage.clickProfileMenu();
+		adminHomePage.clickLogoutMenuItem();
+		// adminHomePage.clickLeftNavigation();	
+		// adminHomePage.clickSignout();
 
-		Thread.sleep(5000);
+		
 		loginPage.clickSignUp();
+		Thread.sleep(100000);
 
 		loginPage.enterSignUpEmail(email);
 		loginPage.enterSignUpFirstName(firstName);
@@ -865,8 +889,12 @@ public class AccountsSettingTest extends LoginintoTheApplicationTest {
 		Properties loadProperties = loadProperties();		
 		
     	ExtentManager.test.log(Status.INFO, "TC_Verification - Verify user information page");	
-		adminHomePage.clickLeftNavigation();	    	
-		adminHomePage.clickAccountSettings();
+	
+		adminHomePage.clickWelcomePopupCloseButton();
+		adminHomePage.clickProfileMenu();
+		adminHomePage.clickFirstProfileMenuItem();
+		// adminHomePage.clickLeftNavigation();	    	
+		// adminHomePage.clickAccountSettings();
 		switchOrCloseTabs(1, "switch");
 		
 		dashboardPage.clickUserAccessKeysLink();		
@@ -981,8 +1009,11 @@ public class AccountsSettingTest extends LoginintoTheApplicationTest {
 		
 		System.out.println("email "+email);
     	ExtentManager.test.log(Status.INFO, "TC_Verification - Create New User and verify invitations");	
-		adminHomePage.clickLeftNavigation();	
-		adminHomePage.clickSignout();
+		adminHomePage.clickWelcomePopupCloseButton();
+		adminHomePage.clickProfileMenu();
+		adminHomePage.clickLogoutMenuItem();
+		// adminHomePage.clickLeftNavigation();	    	
+		// adminHomePage.clickAccountSettings();
 
 		Thread.sleep(5000);
 		loginPage.clickSignUp();

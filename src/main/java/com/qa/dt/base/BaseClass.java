@@ -189,7 +189,7 @@ public class BaseClass {
 	 */
 	public static void launchURL(String url) throws Exception {
 		try {
-			driver.get(url);
+			driver.get(url);			
 			driver.manage().window().maximize();
 		} catch (Exception e) {
 			e.printStackTrace();

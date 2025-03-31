@@ -31,6 +31,7 @@ public class LoginintoTheApplicationTest extends BaseClass{
 		System.out.println(loadProperties.getProperty("RfUrl"));
 		launchURL(loadProperties.getProperty("RfUrl"));
 	}
+	
 	@BeforeMethod
 	public void loginTheApplication() throws Throwable {
 		browserLaunch();
